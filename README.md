@@ -32,4 +32,4 @@ When answering non-empathy topics, it always reminds the user that it is specifi
 
 ---
 
-Note: This model was made to run locally using ollama for quick prototyping and testing, in order for you to test out this model, u can download ollama and a desired model from it and then be sure to change that name of your model in api_empathia.py file replacing it with 'llama3.1' . You can also proceed to use langchain_openai, langchain_anthropic or langchain_huggingface and use their respective api keys to test out this model
+Note: This model was made to run locally using ollama for quick prototyping and testing, in order for you to test out this model, u can download ollama and a desired model from it and then be sure to change that name of your model in api_empathia.py file replacing it with 'llama3.1' . You can also proceed to use langchain_openai, langchain_anthropic, glog apis, langchain_huggingface or anyother api service and use their respective api keys to test out this model
