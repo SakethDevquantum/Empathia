@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doodle Pad</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f0f0f0;
+      overflow: hidden;     /* 🚫 disable scroll */
+    }
+    canvas {
+      border: 2px solid #333;
+      background: white;
+      border-radius: 8px;
+      touch-action: none;   /* 🚫 disable touch scrolling */
+    }
+  </style>
+</head>
+<body>
+  <canvas id="doodleCanvas" width="800" height="500"></canvas>
+
+  <script>
+    const canvas = document.getElementById("doodleCanvas");
+    const ctx = canvas.getContext("2d");
+    let drawing = false;
+
+    function startDrawing(e) {
+      drawing = true;
+      ctx.beginPath();
+      ctx.moveTo(getX(e), getY(e));
+    }
+
+    function stopDrawing() {
+      drawing = false;
+      ctx.closePath();
+    }
+
+    function draw(e) {
+      if (!drawing) return;
+      ctx.lineWidth = 3;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "#000";
+
+      ctx.lineTo(getX(e), getY(e));
+      ctx.stroke();
+    }
+
+    function getX(e) {
+      return e.clientX - canvas.getBoundingClientRect().left;
+    }
+    function getY(e) {
+      return e.clientY - canvas.getBoundingClientRect().top;
+    }
+
+    // Mouse Events
+    canvas.addEventListener("mousedown", startDrawing);
+    canvas.addEventListener("mouseup", stopDrawing);
+    canvas.addEventListener("mouseout", stopDrawing);
+    canvas.addEventListener("mousemove", draw);
+
+    // Touch Events
+    canvas.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      startDrawing(e.touches[0]);
+    });
+    canvas.addEventListener("touchend", stopDrawing);
+    canvas.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      draw(e.touches[0]);
+    });
+  </script>
+</body>
+</html>

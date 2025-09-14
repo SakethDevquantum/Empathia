@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Whack-a-Emoji</title>
+  <style>
+    body { 
+      margin: 0; 
+      background: #eef; 
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    #score { 
+      text-align: center; 
+      font-size: clamp(16px, 4vw, 24px);
+      margin-bottom: 2vh; 
+    }
+    #game-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: min(2vw, 10px);
+      width: min(90vw, 400px);
+      height: min(90vw, 400px);
+      max-width: 90vh;
+      max-height: 90vh;
+    }
+    .hole {
+      border: 1px solid #333; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center;
+      font-size: clamp(20px, 6vw, 40px);
+      cursor: pointer;
+      background: white;
+      border-radius: min(2vw, 8px);
+      transition: background-color 0.2s;
+      aspect-ratio: 1;
+    }
+    .hole:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <div id="score">Score: 0</div>
+  <div id="game-grid"></div>
+  
+  <script>
+    let score = 0;
+    const scoreDisplay = document.getElementById("score");
+    const gameGrid = document.getElementById("game-grid");
+
+    // Create 9 holes in the grid
+    for (let i = 0; i < 9; i++) {
+      const hole = document.createElement("div");
+      hole.classList.add("hole");
+      gameGrid.appendChild(hole);
+    }
+
+    function randomEmoji() {
+      const holes = document.querySelectorAll(".hole");
+      holes.forEach(h => { h.textContent = ""; h.onclick = null; });
+
+      const idx = Math.floor(Math.random() * holes.length);
+      holes[idx].textContent = "😊";
+      holes[idx].onclick = () => {
+        score++;
+        scoreDisplay.textContent = "Score: " + score;
+        holes[idx].textContent = "💥";
+        setTimeout(() => holes[idx].textContent = "", 300);
+      };
+    }
+    
+    setInterval(randomEmoji, 1000);
+  </script>
+</body>
+</html>

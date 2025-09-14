@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bubble Pop</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: #222; color: #fff; font-family: sans-serif; }
+    #score { position: fixed; top: 10px; left: 10px; font-size: 20px; }
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, #6cf, #09f);
+      cursor: pointer;
+      transition: transform 0.2s ease-out;
+    }
+    .pop { transform: scale(0); opacity: 0; }
+  </style>
+</head>
+<body>
+  <div id="score">Score: 0</div>
+  <script>
+    let score = 0;
+    const scoreDisplay = document.getElementById("score");
+
+    function createBubble() {
+      const bubble = document.createElement("div");
+      const size = Math.random() * 60 + 40;
+      bubble.classList.add("bubble");
+      bubble.style.width = size + "px";
+      bubble.style.height = size + "px";
+      bubble.style.left = Math.random() * (window.innerWidth - size) + "px";
+      bubble.style.top = Math.random() * (window.innerHeight - size) + "px";
+      document.body.appendChild(bubble);
+
+      bubble.addEventListener("click", () => {
+        score++;
+        scoreDisplay.textContent = "Score: " + score;
+        bubble.classList.add("pop");
+        setTimeout(() => bubble.remove(), 300);
+      });
+
+      setTimeout(() => bubble.remove(), 4000);
+    }
+
+    setInterval(createBubble, 600);
+  </script>
+</body>
+</html>

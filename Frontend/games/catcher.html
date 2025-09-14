@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Catch the Stars</title>
+  <style>
+    body { 
+      margin: 0; 
+      background: #111; 
+      overflow: hidden; 
+      color: #fff; 
+      font-family: sans-serif; 
+      cursor: none;
+    }
+    #basket {
+      position: absolute;
+      bottom: 20px;
+      width: 100px;
+      height: 20px;
+      background: orange;
+      border-radius: 10px;
+    }
+    #score { 
+      position: fixed; 
+      top: 10px; 
+      left: 10px; 
+      font-size: 20px; 
+    }
+    .star {
+      position: absolute;
+      top: 0;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div id="score">Score: 0</div>
+  <div id="basket"></div>
+  <script>
+    const basket = document.getElementById("basket");
+    let basketX = window.innerWidth / 2 - 50; // Center basket properly
+    let score = 0;
+    const scoreDisplay = document.getElementById("score");
+
+    // Initialize basket position
+    basket.style.left = basketX + "px";
+
+    document.addEventListener("mousemove", e => {
+      basketX = Math.max(0, Math.min(window.innerWidth - 100, e.clientX - 50));
+      basket.style.left = basketX + "px";
+    });
+
+    function createStar() {
+      const star = document.createElement("div");
+      star.classList.add("star");
+      star.textContent = "⭐";
+      const starX = Math.random() * (window.innerWidth - 30);
+      star.style.left = starX + "px";
+      document.body.appendChild(star);
+
+      let y = 0;
+      const fall = setInterval(() => {
+        y += 4;
+        star.style.top = y + "px";
+
+        // Fixed collision detection
+        const starLeft = starX;
+        const starRight = starX + 30; // Star width is about 30px
+        const basketLeft = basketX;
+        const basketRight = basketX + 100;
+
+        // Check if star is at basket level and overlapping horizontally
+        if (y >= window.innerHeight - 60 && y <= window.innerHeight - 20) {
+          if (starRight > basketLeft && starLeft < basketRight) {
+            score++;
+            scoreDisplay.textContent = "Score: " + score;
+            star.remove();
+            clearInterval(fall);
+            return; // Exit this interval
+          }
+        }
+
+        // Remove star if it falls off screen
+        if (y > window.innerHeight) {
+          star.remove();
+          clearInterval(fall);
+        }
+      }, 16); // Smoother animation at ~60fps
+    }
+
+    setInterval(createStar, 800);
+  </script>
+</body>
+</html>
